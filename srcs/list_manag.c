@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 12:55:10 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/25 13:08:54 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int			list_add(t_list_manag *list, char *name)
 	if ((new->state = stat(new->name, &new->stat)) < 0)
 	{
 		ft_printf("!2!%s%s: Problem to load file\n", LS_ERROR_MSG, new->name);
+		list->list_len--;
 		free(new);
 	}
 	else if (list->end)

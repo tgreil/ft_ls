@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 12:57:26 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/25 13:13:01 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct			s_list_ls
 {
 	struct stat			stat;
 	int					state;
+	struct dirent		*dirent;
+	DIR					*DIR;
 	char				*name;
 	char				name_malloced;
 	struct s_list_ls	*next;

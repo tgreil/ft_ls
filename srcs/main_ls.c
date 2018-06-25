@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 12:49:17 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/25 13:09:22 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int			main(int ac, char **av)
 		return (E_ERROR);
 	if (c.list_name.list_len <= 0)
 	{
+		ft_printf("use default \".\"\n");
 		list_add(&c.list_name, ft_strdup("."));
 		c.list_name.end->name_malloced = TRUE;
 	}

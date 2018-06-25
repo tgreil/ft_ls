@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:37:55 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 12:43:42 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/25 13:10:32 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int		param_handler_file(t_container *c, char *name)
 {
 	if (list_add(&c->list_name, name) == E_ERROR)
 		return (E_ERROR);
-	c->list_name.end->name_malloced = FALSE;
+	if (c->list_name.end)
+		c->list_name.end->name_malloced = FALSE;
 	return (E_SUCCESS);
 }
 
