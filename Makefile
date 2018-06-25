@@ -6,11 +6,14 @@
 #    By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/07 16:24:07 by tgreil            #+#    #+#              #
-#    Updated: 2018/06/25 10:20:13 by tgreil           ###   ########.fr        #
+#    Updated: 2018/06/25 11:25:36 by tgreil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	=	main_ls.c
+SRCS	=	main_ls.c			\
+			param_handler.c		\
+			option.c			\
+			list_manag.c
 
 OBJS	= $(addprefix srcs/, $(SRCS:.c=.o))
 

@@ -1,37 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_manag.c                                       :+:      :+:    :+:   */
+/*   option.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 11:30:53 by tgreil           ###   ########.fr       */
+/*   Created: 2018/06/25 10:57:02 by tgreil            #+#    #+#             */
+/*   Updated: 2018/06/25 11:11:13 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int			list_add(t_list_manag *list, char *name)
+int		option_is_set(unsigned char option, char option_index)
 {
-	t_list_ls	*new;
+	unsigned char	value;
 
-	if (!(new = malloc(sizeof(t_list_ls))))
-		return (E_ERROR);
-	new->prev = NULL;
-	new->next = NULL;
-	new->name = name;
-	list->list_len++;
-	if (list->end)
-	{
-		list->end->next = new;
-		new->prev = list->end;
-		list->end = new;
-	}
-	else
-	{
-		list->start = new;
-		list->end = new;
-	}
+	value = 1;
+	value = value << (option_index % 8);
+	if (option & value)
+		return (TRUE);
+	return (FALSE);
+}
+
+int		option_set(unsigned char *option, char option_index)
+{
+	unsigned char	value;
+
+	value = 1;
+	value = value << (option_index % 8);
+	*option = *option | value;
 	return (E_SUCCESS);
 }
