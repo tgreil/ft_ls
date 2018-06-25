@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 13:13:01 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/25 17:36:16 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,11 @@ typedef struct			s_list_ls
 	struct stat			stat;
 	int					state;
 	struct dirent		*dirent;
-	DIR					*DIR;
+	DIR					*dir_dir;
 	char				*name;
 	char				name_malloced;
+	size_t				name_len;
+	struct s_list_ls	*from;
 	struct s_list_ls	*next;
 	struct s_list_ls	*prev;
 }						t_list_ls;
@@ -72,7 +74,7 @@ int			main(int ac, char **av);
 /*
 **			ft_ls_apply.c
 */
-int			ft_ls_apply_f(t_list_manag *list, t_list_ls *elem);
+int			ft_ls_apply_f(t_list_manag *list, t_list_ls *elem, unsigned int op);
 int			ft_ls_apply(t_container *c);
 
 /*
@@ -83,7 +85,12 @@ int			result_print(t_container *c);
 /*
 **			list_manag.c
 */
-int			list_apply(t_list_manag *l, int (*f)(t_list_manag *, t_list_ls *));
+void		list_sort(t_list_manag *list, int sens);
+int			list_apply(t_list_manag *l,
+					int (*f)(t_list_manag *, t_list_ls *, unsigned int op),
+															unsigned int op);
+t_list_ls	*list_create(char *name);
+int			list_insert(t_list_ls *elem, char *name);
 int			list_add(t_list_manag *list, char *name);
 
 /*

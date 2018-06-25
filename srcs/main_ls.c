@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 13:09:22 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/25 17:41:48 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int			main(int ac, char **av)
 		return (E_ERROR);
 	if (c.list_name.list_len <= 0)
 	{
-		ft_printf("use default \".\"\n");
 		list_add(&c.list_name, ft_strdup("."));
 		c.list_name.end->name_malloced = TRUE;
 	}
 	if (ft_ls_apply(&c) == E_ERROR)
 		return (E_ERROR);
+	list_sort(&c.list_name, option_is_set(c.option, OPTION_R));
 	result_print(&c);
 	return (E_SUCCESS);
 }
