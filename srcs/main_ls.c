@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 11:36:20 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/25 11:41:01 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ int			main(int ac, char **av)
 	ls_initializer(&c);
 	if (param_handler(&c, ac, av) == E_ERROR)
 		return (E_ERROR);
+	
 	return (E_SUCCESS);
 }
