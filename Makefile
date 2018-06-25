@@ -6,7 +6,7 @@
 #    By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/07 16:24:07 by tgreil            #+#    #+#              #
-#    Updated: 2018/06/25 11:57:26 by tgreil           ###   ########.fr        #
+#    Updated: 2018/06/25 12:49:41 by tgreil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ SRCS	=	main_ls.c			\
 			param_handler.c		\
 			option.c			\
 			list_manag.c		\
-			result_print.c
+			result_print.c		\
+			ft_ls_apply.c
 
 OBJS	= $(addprefix srcs/, $(SRCS:.c=.o))
 

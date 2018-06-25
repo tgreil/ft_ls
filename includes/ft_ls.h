@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 12:01:30 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/25 12:57:26 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct			s_list_ls
 	struct stat			stat;
 	int					state;
 	char				*name;
+	char				name_malloced;
 	struct s_list_ls	*next;
 	struct s_list_ls	*prev;
 }						t_list_ls;
@@ -67,8 +68,20 @@ void		ls_initializer(t_container *c);
 int			main(int ac, char **av);
 
 /*
+**			ft_ls_apply.c
+*/
+int			ft_ls_apply_f(t_list_manag *list, t_list_ls *elem);
+int			ft_ls_apply(t_container *c);
+
+/*
+**			result_print.c
+*/
+int			result_print(t_container *c);
+
+/*
 **			list_manag.c
 */
+int			list_apply(t_list_manag *l, int (*f)(t_list_manag *, t_list_ls *));
 int			list_add(t_list_manag *list, char *name);
 
 /*

@@ -6,11 +6,24 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 12:07:27 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/25 12:55:10 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+int			list_apply(t_list_manag *list,
+							int (*f)(t_list_manag *, t_list_ls *))
+{
+	list->act = list->start;
+	while (list->act)
+	{
+		if (f(list, list->act) == E_ERROR)
+			return (E_ERROR);
+		list->act = list->act->next;
+	}
+	return (E_SUCCESS);
+}
 
 int			list_add(t_list_manag *list, char *name)
 {
