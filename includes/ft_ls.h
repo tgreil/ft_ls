@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 17:36:16 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/26 09:36:08 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,7 @@
 # define OPTION_T_C		't'
 # define LS_ERROR_MSG	"Ft_ls error: "
 
-typedef struct			s_list_ls
-{
-	struct stat			stat;
-	int					state;
-	struct dirent		*dirent;
-	DIR					*dir_dir;
-	char				*name;
-	char				name_malloced;
-	size_t				name_len;
-	struct s_list_ls	*from;
-	struct s_list_ls	*next;
-	struct s_list_ls	*prev;
-}						t_list_ls;
+typedef struct s_list_ls		t_list_ls;
 
 typedef struct			s_list_manag
 {
@@ -59,10 +47,24 @@ typedef struct			s_list_manag
 	t_list_ls			*end;
 }						t_list_manag;
 
+typedef struct			s_list_ls
+{
+	struct stat			stat;
+	int					state;
+	struct dirent		*dirent;
+	DIR					*dir_dir;
+	char				*name;
+	char				name_malloced;
+	size_t				name_len;
+	struct s_list_manag	folder;
+	struct s_list_ls	*next;
+	struct s_list_ls	*prev;
+}						t_list_ls;
+
 typedef struct			s_container
 {
 	unsigned char		option;
-	t_list_manag		list_name;
+	t_list_manag		list_param;
 }						t_container;
 
 /*

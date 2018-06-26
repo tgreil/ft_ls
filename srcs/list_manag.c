@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 17:40:24 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/26 09:37:53 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,14 @@ t_list_ls	*list_create(char *name)
 		return (NULL);
 	new->prev = NULL;
 	new->next = NULL;
-	new->from = NULL;
 	new->name = name;
 	new->name_malloced = FALSE;
 	new->name_len = ft_strlen(name);
 	new->state = stat(new->name, &new->stat);
+	new->folder.list_len = 0;
+	new->folder.start = NULL;
+	new->folder.end = NULL;
+	new->folder.act = NULL;
 	return (new);
 }
 
@@ -74,7 +77,6 @@ int			list_insert(t_list_ls *elem, char *name)
 		elem->next->prev = new;
 	new->prev = elem;
 	elem->next = new;
-	new->from = elem;
 	new->name_malloced = TRUE;
 	return (E_SUCCESS);
 }
