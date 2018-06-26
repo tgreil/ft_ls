@@ -34,26 +34,13 @@ void		list_sort(t_list_manag *list, int sens,
 	}
 }
 
-int			list_apply(t_list_manag *list,
-					int (*f)(t_list_manag *, t_list_ls *, unsigned int flag),
-															unsigned int flag)
-{
-	list->act = list->start;
-	while (list->act)
-	{
-		if (f(list, list->act, flag) == E_ERROR)
-			return (E_ERROR);
-		list->act = list->act->next;
-	}
-	return (E_SUCCESS);
-}
-
 t_list_ls	*list_create(char *name)
 {
 	t_list_ls	*new;
 
 	if (!(new = malloc(sizeof(t_list_ls))))
 		return (NULL);
+	ft_bzero(new, sizeof(t_list_ls));
 	new->prev = NULL;
 	new->next = NULL;
 	new->name = name;
@@ -91,5 +78,6 @@ int			list_add(t_list_manag *list, char *name)
 		list->start = new;
 		list->end = new;
 	}
+	new->list = list;
 	return (E_SUCCESS);
 }

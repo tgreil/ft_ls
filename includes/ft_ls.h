@@ -16,7 +16,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <pwd.h>
-# include <uuid/uuid.h>
+//# include <uuid/uuid.h>
 # include <time.h>
 # include <sys/xattr.h>
 # include "libft.h"
@@ -41,6 +41,7 @@ typedef struct s_list_ls		t_list_ls;
 
 typedef struct			s_list_manag
 {
+	int					calc[1];
 	size_t				list_len;
 	t_list_ls			*start;
 	t_list_ls			*act;
@@ -57,6 +58,7 @@ typedef struct			s_list_ls
 	char				name_malloced;
 	size_t				name_len;
 	struct s_list_manag	folder;
+	struct s_list_manag	*list;
 	struct s_list_ls	*next;
 	struct s_list_ls	*prev;
 }						t_list_ls;
@@ -78,25 +80,19 @@ int			main(int ac, char **av);
 /*
 **			ft_ls_apply.c
 */
-int			ft_ls_apply_f(t_list_manag *list, t_list_ls *elem, unsigned int op);
 int			ft_ls_apply(t_container *c, t_list_manag *list, int level);
 
 /*
 **			result_print.c
 */
-int			result_print_unit_time(t_list_ls *elem);
-int			result_print_unit_rights(t_list_ls *elem);
-int			result_print_unit(t_container *c, t_list_ls *elem);
-int			result_print(t_container *c, t_list_manag *list, int level);
+int			print_result_unit(t_container *c, t_list_ls *elem, int flag);
+int			print_result(t_container *c, t_list_manag *list, int level);
 
 /*
 **			list_manag.c
 */
 void		list_sort(t_list_manag *list, int sens,
 									int (*f)(t_list_ls *, t_list_ls *));
-int			list_apply(t_list_manag *l,
-					int (*f)(t_list_manag *, t_list_ls *, unsigned int op),
-															unsigned int op);
 t_list_ls	*list_create(char *name);
 int			list_add(t_list_manag *list, char *name);
 

@@ -14,7 +14,7 @@ SRCS	=	main_ls.c			\
 			param_handler.c		\
 			option.c			\
 			list_manag.c		\
-			result_print.c		\
+			print_result.c		\
 			ft_ls_apply.c		\
 			sort.c
 

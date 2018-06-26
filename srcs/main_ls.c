@@ -40,13 +40,12 @@ int			ls_exit(t_container *c, int status)
 
 int			ls_function(t_container *c, t_list_manag *list, int level)
 {
-	if (ft_ls_apply(c, &c->list_param, level) == E_ERROR)
+	if (ft_ls_apply(c, list, level) == E_ERROR)
 		return (E_ERROR);
 	if (!option_is_set(c->option, OPTION_T))
 		list_sort(list, option_is_set(c->option, OPTION_R), &sort_name);
 	else
 		list_sort(list, option_is_set(c->option, OPTION_R), &sort_date);
-	result_print(c, list, level);
 	return (E_SUCCESS);
 }
 
@@ -64,5 +63,6 @@ int			main(int ac, char **av)
 	}
 	if (ls_function(&c, &c.list_param, 0) == E_ERROR)
 		return (E_ERROR);
+	print_result(&c, &c.list_param, 0);
 	return (ls_exit(&c, E_SUCCESS));
 }

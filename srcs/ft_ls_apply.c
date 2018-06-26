@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-int		ft_ls_apply_f(t_list_manag *list, t_list_ls *elem, unsigned int option)
+int		ft_ls_apply_unit(t_container *c, t_list_ls *elem)
 {
 	if ((elem->stat.st_mode & S_IFDIR))
 	{
@@ -21,22 +21,31 @@ int		ft_ls_apply_f(t_list_manag *list, t_list_ls *elem, unsigned int option)
 		while ((elem->dirent = readdir(elem->dir_dir)))
 		{
 			if (elem->dirent->d_name[0] != '.' ||
-				option_is_set(option, OPTION_A))
+				option_is_set(c->option, OPTION_A))
 			{
 				if (list_add(&elem->folder, ft_strdup(elem->dirent->d_name)) < 0)
 					return (E_ERROR);
-				elem->folder.list_len++;
+				ft_printf("%s\n", elem->folder.end->name);
 			}
 		}
 		closedir(elem->dir_dir);
 	}
-	list += 1;
 	return (E_SUCCESS);
 }
 
 int		ft_ls_apply(t_container *c, t_list_manag *list, int level)
 {
-	if (!level || option_is_set(c->option, OPTION_RR))
-		list_apply(list, &ft_ls_apply_f, c->option);
+	list->act = list->start;
+	while (list->act)
+	{
+		if (ft_ls_apply_unit(c, list->act) == E_ERROR)
+			return (E_ERROR);
+		if (list->act->state > 0 && (list->act->stat.st_mode & S_IFDIR) &&
+			list->act->folder.list_len &&
+			(!level || option_is_set(c->option, OPTION_RR)) &&
+			(!level || (ft_strcmp(list->act->name, ".") && ft_strcmp(list->act->name, ".."))))
+			ls_function(c, &list->act->folder, level + 1);
+		list->act = list->act->next;
+	}
 	return (E_SUCCESS);
 }
