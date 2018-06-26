@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/26 09:36:08 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/26 19:29:44 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,28 +71,33 @@ typedef struct			s_container
 **			main_ls.c
 */
 void		ls_initializer(t_container *c);
+int			ls_exit(t_container *c, int status);
+int			ls_function(t_container *c, t_list_manag *list, int level);
 int			main(int ac, char **av);
 
 /*
 **			ft_ls_apply.c
 */
 int			ft_ls_apply_f(t_list_manag *list, t_list_ls *elem, unsigned int op);
-int			ft_ls_apply(t_container *c);
+int			ft_ls_apply(t_container *c, t_list_manag *list, int level);
 
 /*
 **			result_print.c
 */
-int			result_print(t_container *c);
+int			result_print_unit_time(t_list_ls *elem);
+int			result_print_unit_rights(t_list_ls *elem);
+int			result_print_unit(t_container *c, t_list_ls *elem);
+int			result_print(t_container *c, t_list_manag *list, int level);
 
 /*
 **			list_manag.c
 */
-void		list_sort(t_list_manag *list, int sens);
+void		list_sort(t_list_manag *list, int sens,
+									int (*f)(t_list_ls *, t_list_ls *));
 int			list_apply(t_list_manag *l,
 					int (*f)(t_list_manag *, t_list_ls *, unsigned int op),
 															unsigned int op);
 t_list_ls	*list_create(char *name);
-int			list_insert(t_list_ls *elem, char *name);
 int			list_add(t_list_manag *list, char *name);
 
 /*
@@ -101,6 +106,12 @@ int			list_add(t_list_manag *list, char *name);
 int			param_handler_option(t_container *c, char *string);
 int			param_handler_file(t_container *c, char *name);
 int			param_handler(t_container *c, int ac, char **av);
+
+/*
+**			sort.c
+*/
+int			sort_date(t_list_ls *one, t_list_ls *two);
+int			sort_name(t_list_ls *one, t_list_ls *two);
 
 /*
 **			option.c

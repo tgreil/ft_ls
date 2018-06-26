@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/26 09:35:04 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/26 19:31:51 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,30 @@ int		result_print_unit(t_container *c, t_list_ls *elem)
 	return (E_SUCCESS);
 }
 
-int		result_print(t_container *c)
+int		result_print(t_container *c, t_list_manag *list, int level)
 {
-	c->list_param.act = c->list_param.start;
-	while (c->list_param.act)
+	list->act = list->start;
+	while (list->act)
 	{
 		// calculer les len max
-		c->list_param.act = c->list_param.act->next;
+		list->act = list->act->next;
 	}
-	c->list_param.act = c->list_param.start;
-	while (c->list_param.act)
+	list->act = list->start;
+	while (list->act)
 	{
-		if (c->list_param.act->name[0] != '.' ||
-									option_is_set(c->option, OPTION_A))
-			result_print_unit(c, c->list_param.act);
-		c->list_param.act = c->list_param.act->next;
+		if (list->act->folder.list_len > 0 &&
+			(!level || option_is_set(c->option, OPTION_RR)))
+		{
+			if (list->act->prev)
+				ft_printf("\n");
+			if (list->list_len > 1)
+				ft_printf("%s:\n", list->act->name);
+			if (ls_function(c, &list->act->folder, level + 1) == E_ERROR)
+				return (E_ERROR);
+		}
+		else
+			result_print_unit(c, list->act);
+		list->act = list->act->next;
 	}
 	return (E_SUCCESS);
 }
