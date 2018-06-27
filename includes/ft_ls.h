@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/27 13:41:17 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/27 15:27:22 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_list_ls		t_list_ls;
 
 typedef struct			s_list_manag
 {
-	int					calc[1];
+	int					calc[2];
 	size_t				list_len;
 	char				*path;
 	t_list_ls			*start;

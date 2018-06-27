@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/27 13:51:12 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/27 15:33:49 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		print_rights(t_list_ls *elem, int flag)
 		ft_printf("%c", (elem->stat.st_mode & S_IXGRP) ? 'x' : '-');
 		ft_printf("%c", (elem->stat.st_mode & S_IROTH) ? 'r' : '-');
 		ft_printf("%c", (elem->stat.st_mode & S_IWOTH) ? 'w' : '-');
-		ft_printf("%c ", (elem->stat.st_mode & S_IWOTH) ? 'x' : '-');
+		ft_printf("%c ", (elem->stat.st_mode & S_IXOTH) ? 'x' : '-');
 	}
 	return (E_SUCCESS);
 }
@@ -69,6 +69,8 @@ int		print_name(t_list_ls *elem, int flag)
 	{
 		if ((elem->stat.st_mode & S_IFDIR))
 			ft_printf("{light blue}");
+		else if ((elem->stat.st_mode & S_IXUSR))
+			ft_printf("{light red}");
 		ft_printf("%s\n", elem->name);
 		ft_printf("{eoc}");
 	}
@@ -82,6 +84,8 @@ int		print_result_unit(t_container *c, t_list_ls *elem, int flag)
 	print_name(elem, flag);
 	if (flag <= 0)
 		print_result_unit(c, elem, flag + 1);
+	if (!flag)
+		elem->list->calc[1] += elem->stat.st_blocks;
 	return (E_SUCCESS);
 }
 
@@ -91,15 +95,14 @@ int		print_result(t_container *c, t_list_manag *list, int level)
 	// bzero list->calc
 	while (list->act)
 	{
-		if (list->act->folder.list_len > 0 &&
+		if ((list->act->stat.st_mode & S_IFDIR) &&
 			(!level || option_is_set(c->option, OPTION_RR)))
 		{
-			if (list->act->prev)
+			if (list->act && list->act->prev)
 				ft_printf("\n");
 			if (list->list_len > 1)
 				ft_printf("%s:\n", list->act->name_pathed);
 			print_result(c, &list->act->folder, level + 1);
-			// recursif dans dossier ( elem->list->folder )
 		}
 		else
 			print_result_unit(c, list->act, 0);
