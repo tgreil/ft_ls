@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/26 19:27:09 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/27 13:58:19 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		list_sort(t_list_manag *list, int sens,
 	}
 }
 
-t_list_ls	*list_create(char *name)
+t_list_ls	*list_create(t_list_manag *list, char *name)
 {
 	t_list_ls	*new;
 
@@ -43,14 +43,19 @@ t_list_ls	*list_create(char *name)
 	ft_bzero(new, sizeof(t_list_ls));
 	new->prev = NULL;
 	new->next = NULL;
-	new->name = name;
-	new->name_malloced = FALSE;
-	new->name_len = ft_strlen(name);
-	new->state = stat(new->name, &new->stat);
+	if (!(new->name = ft_strdup(name)))
+		return (NULL);
+	if (list->path)
+		new->name_pathed = ft_strjoin(list->path, name);
+	else
+		new->name_pathed = ft_strdup(name);
+	new->state = stat(new->name_pathed, &new->stat);
 	new->folder.list_len = 0;
+	new->folder.path = NULL;
 	new->folder.start = NULL;
 	new->folder.end = NULL;
 	new->folder.act = NULL;
+	new->list = list;
 	return (new);
 }
 
@@ -58,26 +63,24 @@ int			list_add(t_list_manag *list, char *name)
 {
 	t_list_ls	*new;
 
-	if (!(new = list_create(name)))
+	if (!(new = list_create(list, name)))
 		return (E_ERROR);
-	list->list_len++;
 	if (new->state < 0)
 	{
 		ft_printf("!2!%s%s: Problem to load file\n", LS_ERROR_MSG, new->name);
-		list->list_len--;
+		free(new->name_pathed);
+		free(new->name);
 		free(new);
+		return (E_SUCCESS);
 	}
 	else if (list->end)
 	{
 		list->end->next = new;
 		new->prev = list->end;
-		list->end = new;
 	}
 	else
-	{
 		list->start = new;
-		list->end = new;
-	}
-	new->list = list;
+	list->list_len++;
+	list->end = new;
 	return (E_SUCCESS);
 }

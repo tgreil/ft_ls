@@ -6,26 +6,46 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 12:50:17 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/26 19:16:01 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/27 13:55:10 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		ft_ls_apply_unit(t_container *c, t_list_ls *elem)
+int		path_maker(t_list_ls *elem)
 {
-	if ((elem->stat.st_mode & S_IFDIR))
+	char	*new;
+
+	new = NULL;
+	if (elem->list->path)
+		new = ft_strjoin(elem->list->path, elem->name);
+	else
+		new = ft_strdup(elem->name);
+	if (new)
+		elem->folder.path = ft_strjoin(new, "/");
+	else
+		elem->folder.path = NULL;
+	if (new)
+		free(new);
+	return (E_SUCCESS);
+}
+
+int		ft_ls_apply_unit(t_container *c, t_list_ls *elem, int level)
+{
+	if ((elem->stat.st_mode & S_IFDIR) &&
+		(!level || option_is_set(c->option, OPTION_RR)))
 	{
-		if (!(elem->dir_dir = opendir(elem->name)))
+		if (!(elem->dir_dir = opendir(elem->name_pathed)))
 			return (E_SUCCESS); // MSG FAIL OPEN DIR
 		while ((elem->dirent = readdir(elem->dir_dir)))
 		{
 			if (elem->dirent->d_name[0] != '.' ||
 				option_is_set(c->option, OPTION_A))
 			{
-				if (list_add(&elem->folder, ft_strdup(elem->dirent->d_name)) < 0)
+				if (!elem->folder.list_len)
+					path_maker(elem);
+				if (list_add(&elem->folder, elem->dirent->d_name) < 0)
 					return (E_ERROR);
-				ft_printf("%s\n", elem->folder.end->name);
 			}
 		}
 		closedir(elem->dir_dir);
@@ -38,11 +58,9 @@ int		ft_ls_apply(t_container *c, t_list_manag *list, int level)
 	list->act = list->start;
 	while (list->act)
 	{
-		if (ft_ls_apply_unit(c, list->act) == E_ERROR)
+		if (ft_ls_apply_unit(c, list->act, level) == E_ERROR)
 			return (E_ERROR);
-		if (list->act->state > 0 && (list->act->stat.st_mode & S_IFDIR) &&
-			list->act->folder.list_len &&
-			(!level || option_is_set(c->option, OPTION_RR)) &&
+		if (list->act->folder.list_len &&
 			(!level || (ft_strcmp(list->act->name, ".") && ft_strcmp(list->act->name, ".."))))
 			ls_function(c, &list->act->folder, level + 1);
 		list->act = list->act->next;

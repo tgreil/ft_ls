@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/26 19:29:44 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/27 13:41:17 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct			s_list_manag
 {
 	int					calc[1];
 	size_t				list_len;
+	char				*path;
 	t_list_ls			*start;
 	t_list_ls			*act;
 	t_list_ls			*end;
@@ -55,8 +56,7 @@ typedef struct			s_list_ls
 	struct dirent		*dirent;
 	DIR					*dir_dir;
 	char				*name;
-	char				name_malloced;
-	size_t				name_len;
+	char				*name_pathed;
 	struct s_list_manag	folder;
 	struct s_list_manag	*list;
 	struct s_list_ls	*next;
@@ -93,7 +93,7 @@ int			print_result(t_container *c, t_list_manag *list, int level);
 */
 void		list_sort(t_list_manag *list, int sens,
 									int (*f)(t_list_ls *, t_list_ls *));
-t_list_ls	*list_create(char *name);
+t_list_ls	*list_create(t_list_manag *list, char *name);
 int			list_add(t_list_manag *list, char *name);
 
 /*

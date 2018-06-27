@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   result_print.c                                     :+:      :+:    :+:   */
+/*   print_result.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/26 19:31:51 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/27 13:51:12 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int		print_result_unit(t_container *c, t_list_ls *elem, int flag)
 
 int		print_result(t_container *c, t_list_manag *list, int level)
 {
-	ft_printf("list_len: %d\n", list->list_len);
 	list->act = list->start;
 	// bzero list->calc
 	while (list->act)
@@ -98,7 +97,7 @@ int		print_result(t_container *c, t_list_manag *list, int level)
 			if (list->act->prev)
 				ft_printf("\n");
 			if (list->list_len > 1)
-				ft_printf("%s:\n", list->act->name);
+				ft_printf("%s:\n", list->act->name_pathed);
 			print_result(c, &list->act->folder, level + 1);
 			// recursif dans dossier ( elem->list->folder )
 		}
