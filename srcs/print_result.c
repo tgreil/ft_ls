@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 18:21:32 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 19:22:31 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int		print_option_l(t_list_ls *elem)
 	date[ft_strlen(date) - 9] = '\0';
 	date += 4;
 	ft_printf("%s ", date);
+	// print year and not hour if != actual_year
 	return (E_SUCCESS);
 }
 
@@ -51,8 +52,9 @@ int		print_name(t_list_ls *elem, int to_color)
 			ft_printf("{light blue}");
 		else if ((elem->stat.st_mode & S_IXUSR))
 			ft_printf("{light red}");
+		else if (0)
+			ft_printf("{light magenta}");
 	}
-	ft_printf("%s\n", elem->name);
 	if (to_color)
 		ft_printf("{eoc}");
 	return (E_SUCCESS);
@@ -64,6 +66,10 @@ int		print_result_unit(t_container *c, t_list_ls *elem)
 	if (option_is_set(c->option, OPTION_L))
 		print_option_l(elem);
 	print_name(elem, option_is_set(c->option, OPTION_C));
+	ft_printf("%s", elem->name);
+	if (S_ISLNK(elem->stat.st_mode))
+		ft_printf(" -> %s", "test"); // a changer
+	ft_printf("\n");
 	return (E_SUCCESS);
 }
 

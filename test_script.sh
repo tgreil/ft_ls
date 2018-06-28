@@ -51,9 +51,9 @@ diff mine ref
 #diff mine ref
 
 #test 9: option l, print informations about files
-#echo $color "ls -l" $eoc
-#ls -l > ref
-#./ft_ls -l > mine
-#diff mine ref
+echo $color "ls -l srcs/" $eoc
+ls -l srcs/ > ref
+./ft_ls -l srcs/ > mine
+diff mine ref
 
 rm mine ref
