@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 18:12:08 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 18:22:56 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@ int			ft_ls_apply(t_container *c, t_list_manag *list, int level);
 /*
 **			result_print.c
 */
+int			print_rights(t_list_ls *elem);
+int			print_option_l(t_list_ls *elem);
+int			print_name(t_list_ls *elem, int to_color);
 int			print_result_unit(t_container *c, t_list_ls *elem);
 int			print_result(t_container *c, t_list_manag *list, int level);
 
@@ -99,6 +102,7 @@ int			print_result(t_container *c, t_list_manag *list, int level);
 void		list_sort(t_list_manag *list, int sens,
 									int (*f)(t_list_ls *, t_list_ls *));
 t_list_ls	*list_create(t_list_manag *list, char *name);
+int			list_calc(t_list_manag *list, t_list_ls *new);
 int			list_add(t_list_manag *list, char *name);
 
 /*

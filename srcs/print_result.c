@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 18:15:48 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 18:21:32 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,49 +27,19 @@ int		print_rights(t_list_ls *elem)
 	return (E_SUCCESS);
 }
 
-int		print_number(t_list_ls *elem)
-{
-	ft_printf("%*d ", elem->list->calc[1] + 1, elem->stat.st_nlink);
-	return (E_SUCCESS);
-}
-
-int		print_user(t_list_ls *elem)
-{
-	ft_printf("%*s ", elem->list->calc[2], elem->passwd->pw_name);
-	return (E_SUCCESS);
-}
-
-int		print_groupe(t_list_ls *elem)
-{
-	ft_printf("%*s ", elem->list->calc[3] + 1, elem->group->gr_name);
-	return (E_SUCCESS);
-}
-
-int		print_size(t_list_ls *elem)
-{
-	ft_printf("%*d ", elem->list->calc[4] + 1, elem->stat.st_size);
-	return (E_SUCCESS);
-}
-
-int		print_time(t_list_ls *elem)
+int		print_option_l(t_list_ls *elem)
 {
 	char	*date;
 
+	print_rights(elem);
+	ft_printf("%*d ", elem->list->calc[1] + 1, elem->stat.st_nlink);
+	ft_printf("%*s ", elem->list->calc[2], elem->passwd->pw_name);
+	ft_printf("%*s ", elem->list->calc[3] + 1, elem->group->gr_name);
+	ft_printf("%*d ", elem->list->calc[4] + 1, elem->stat.st_size);
 	date = ctime(&elem->stat.st_mtime);
 	date[ft_strlen(date) - 9] = '\0';
 	date += 4;
 	ft_printf("%s ", date);
-	return (E_SUCCESS);
-}
-
-int		print_option_l(t_list_ls *elem)
-{
-	print_rights(elem);
-	print_number(elem);
-	print_user(elem);
-	print_groupe(elem);
-	print_size(elem);
-	print_time(elem);
 	return (E_SUCCESS);
 }
 
@@ -100,7 +70,6 @@ int		print_result_unit(t_container *c, t_list_ls *elem)
 int		print_result(t_container *c, t_list_manag *list, int level)
 {
 	list->act = list->start;
-	// bzero list->calc
 	while (list->act)
 	{
 		if ((list->act->stat.st_mode & S_IFDIR) &&

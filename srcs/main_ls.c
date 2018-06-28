@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 17:15:45 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 18:24:18 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void		ls_initializer(t_container *c)
 
 int			ls_exit(t_container *c, int status)
 {
+	// tout free attention on free pas en cas de -R
 	while (c->list_param.start)
 	{
 		c->list_param.start = c->list_param.start->next;
 		if (c->list_param.start)
 		{
 			free(c->list_param.start->name);
-			// free name_pathed
 			free(c->list_param.start->prev);
 		}
 	}
@@ -41,7 +41,7 @@ int			ls_exit(t_container *c, int status)
 
 int			ls_function(t_container *c, t_list_manag *list, int level)
 {
-	// sort file etc ... first and folder at the end
+	// sort [file etc ...] first and [folder] at the end
 	if (ft_ls_apply(c, list, level) == E_ERROR)
 		return (E_ERROR);
 	list_sort(list, option_is_set(c->option, OPTION_R), &sort_name);
