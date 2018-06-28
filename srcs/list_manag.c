@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/27 16:14:06 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 17:21:55 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ t_list_ls	*list_create(t_list_manag *list, char *name)
 int			list_calc(t_list_manag *list, t_list_ls *new)
 {
 	list->calc[0] += new->stat.st_blocks;
+	if (list->calc[1] < int_get_unit(new->stat.st_nlink))
+		list->calc[1] = int_get_unit(new->stat.st_nlink);
 	if (list->calc[4] < int_get_unit(new->stat.st_size))
 		list->calc[4] = int_get_unit(new->stat.st_size);
 	return (E_SUCCESS);

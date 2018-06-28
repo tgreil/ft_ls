@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 16:15:12 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 17:15:45 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void		ls_initializer(t_container *c)
 {
+	ft_bzero(c, sizeof(t_container));
 	c->option = 0;
 	c->list_param.end = NULL;
 	c->list_param.start = NULL;
@@ -40,6 +41,7 @@ int			ls_exit(t_container *c, int status)
 
 int			ls_function(t_container *c, t_list_manag *list, int level)
 {
+	// sort file etc ... first and folder at the end
 	if (ft_ls_apply(c, list, level) == E_ERROR)
 		return (E_ERROR);
 	list_sort(list, option_is_set(c->option, OPTION_R), &sort_name);

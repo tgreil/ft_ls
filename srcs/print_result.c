@@ -6,23 +6,11 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 16:19:44 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 17:22:31 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-int		print_time(t_list_ls *elem)
-{
-	char	*date;
-
-	date = ctime(&elem->stat.st_mtime);
-	date[ft_strlen(date) - 4] = ' ';
-	date[ft_strlen(date) - 5] = '\0';
-	date += 4;
-	ft_printf("%s", date);
-	return (E_SUCCESS);
-}
 
 int		print_rights(t_list_ls *elem)
 {
@@ -39,18 +27,48 @@ int		print_rights(t_list_ls *elem)
 	return (E_SUCCESS);
 }
 
+int		print_number(t_list_ls *elem)
+{
+	ft_printf("%*d ", elem->list->calc[1] + 1, elem->stat.st_nlink);
+	return (E_SUCCESS);
+}
+
+int		print_user(t_list_ls *elem)
+{
+	ft_printf("%*s ", elem->list->calc[2], "tgreil"); // a changer
+	return (E_SUCCESS);
+}
+
+int		print_groupe(t_list_ls *elem)
+{
+	ft_printf("%*s ", elem->list->calc[3] + 1, "2018_paris"); // a changer
+	return (E_SUCCESS);
+}
+
 int		print_size(t_list_ls *elem)
 {
 	ft_printf("%*d ", elem->list->calc[4] + 1, elem->stat.st_size);
 	return (E_SUCCESS);
 }
 
+int		print_time(t_list_ls *elem)
+{
+	char	*date;
+
+	date = ctime(&elem->stat.st_mtime);
+	date[ft_strlen(date) - 4] = ' ';
+	date[ft_strlen(date) - 5] = '\0';
+	date += 4;
+	ft_printf("%s", date);
+	return (E_SUCCESS);
+}
+
 int		print_option_l(t_list_ls *elem)
 {
 	print_rights(elem);
-	ft_printf("%*d ", elem->list->calc[1], 7); // a changer
-	ft_printf("%*s ", elem->list->calc[2], "tgreil"); // a changer
-	ft_printf("%*s ", elem->list->calc[3], "2018_paris"); // a changer
+	print_number(elem);
+	print_user(elem);
+	print_groupe(elem);
 	print_size(elem);
 	print_time(elem);
 	return (E_SUCCESS);
