@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 17:21:55 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 18:12:30 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,10 @@ int			list_calc(t_list_manag *list, t_list_ls *new)
 	list->calc[0] += new->stat.st_blocks;
 	if (list->calc[1] < int_get_unit(new->stat.st_nlink))
 		list->calc[1] = int_get_unit(new->stat.st_nlink);
+	if (list->calc[2] < (int)ft_strlen(new->passwd->pw_name))
+		list->calc[2] = (int)ft_strlen(new->passwd->pw_name);
+	if (list->calc[3] < (int)ft_strlen(new->group->gr_name))
+		list->calc[3] = (int)ft_strlen(new->group->gr_name);
 	if (list->calc[4] < int_get_unit(new->stat.st_size))
 		list->calc[4] = int_get_unit(new->stat.st_size);
 	return (E_SUCCESS);
@@ -92,5 +96,7 @@ int			list_add(t_list_manag *list, char *name)
 		list->start = new;
 	list->list_len++;
 	list->end = new;
+	new->passwd = getpwuid(new->stat.st_uid);
+	new->group = getgrgid(new->stat.st_gid);
 	return (list_calc(list, new));
 }

@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 16:05:33 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 18:12:08 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <pwd.h>
+# include <grp.h>
 # include <uuid/uuid.h>
 # include <time.h>
 # include <sys/xattr.h>
@@ -53,6 +54,8 @@ typedef struct			s_list_manag
 
 typedef struct			s_list_ls
 {
+	struct group 		*group;
+	struct passwd		*passwd;
 	struct stat			stat;
 	int					state;
 	struct dirent		*dirent;

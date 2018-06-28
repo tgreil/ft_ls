@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 17:22:31 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 18:15:48 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ int		print_number(t_list_ls *elem)
 
 int		print_user(t_list_ls *elem)
 {
-	ft_printf("%*s ", elem->list->calc[2], "tgreil"); // a changer
+	ft_printf("%*s ", elem->list->calc[2], elem->passwd->pw_name);
 	return (E_SUCCESS);
 }
 
 int		print_groupe(t_list_ls *elem)
 {
-	ft_printf("%*s ", elem->list->calc[3] + 1, "2018_paris"); // a changer
+	ft_printf("%*s ", elem->list->calc[3] + 1, elem->group->gr_name);
 	return (E_SUCCESS);
 }
 
@@ -56,10 +56,9 @@ int		print_time(t_list_ls *elem)
 	char	*date;
 
 	date = ctime(&elem->stat.st_mtime);
-	date[ft_strlen(date) - 4] = ' ';
-	date[ft_strlen(date) - 5] = '\0';
+	date[ft_strlen(date) - 9] = '\0';
 	date += 4;
-	ft_printf("%s", date);
+	ft_printf("%s ", date);
 	return (E_SUCCESS);
 }
 
