@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/27 15:27:22 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 16:05:33 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <pwd.h>
-//# include <uuid/uuid.h>
+# include <uuid/uuid.h>
 # include <time.h>
 # include <sys/xattr.h>
 # include "libft.h"
@@ -35,13 +35,15 @@
 # define OPTION_R_C		'r'
 # define OPTION_T		4
 # define OPTION_T_C		't'
+# define OPTION_C		5
+# define OPTION_C_C		'c'
 # define LS_ERROR_MSG	"Ft_ls error: "
 
 typedef struct s_list_ls		t_list_ls;
 
 typedef struct			s_list_manag
 {
-	int					calc[2];
+	int					calc[5];
 	size_t				list_len;
 	char				*path;
 	t_list_ls			*start;
@@ -85,7 +87,7 @@ int			ft_ls_apply(t_container *c, t_list_manag *list, int level);
 /*
 **			result_print.c
 */
-int			print_result_unit(t_container *c, t_list_ls *elem, int flag);
+int			print_result_unit(t_container *c, t_list_ls *elem);
 int			print_result(t_container *c, t_list_manag *list, int level);
 
 /*
@@ -114,5 +116,10 @@ int			sort_name(t_list_ls *one, t_list_ls *two);
 */
 int			option_is_set(unsigned char option, char option_index);
 int			option_set(unsigned char *option, char option_index);
+
+/*
+**			ls_utils.c
+*/
+int			int_get_unit(int nb);
 
 #endif

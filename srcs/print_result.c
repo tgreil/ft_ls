@@ -6,86 +6,77 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/27 15:33:49 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 16:19:44 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		print_time(t_list_ls *elem, int flag)
+int		print_time(t_list_ls *elem)
 {
-	if (flag)
-	{
-		elem += 1; // a changer
-		ft_printf("Jun 25 12:49 ");
-	}
+	char	*date;
+
+	date = ctime(&elem->stat.st_mtime);
+	date[ft_strlen(date) - 4] = ' ';
+	date[ft_strlen(date) - 5] = '\0';
+	date += 4;
+	ft_printf("%s", date);
 	return (E_SUCCESS);
 }
 
-int		print_rights(t_list_ls *elem, int flag)
+int		print_rights(t_list_ls *elem)
 {
-	if (flag)
-	{
-		ft_printf("%c", (elem->stat.st_mode & S_IFDIR) ? 'd' : '-');
-		ft_printf("%c", (elem->stat.st_mode & S_IRUSR) ? 'r' : '-');
-		ft_printf("%c", (elem->stat.st_mode & S_IWUSR) ? 'w' : '-');
-		ft_printf("%c", (elem->stat.st_mode & S_IXUSR) ? 'x' : '-');
-		ft_printf("%c", (elem->stat.st_mode & S_IRGRP) ? 'r' : '-');
-		ft_printf("%c", (elem->stat.st_mode & S_IWGRP) ? 'w' : '-');
-		ft_printf("%c", (elem->stat.st_mode & S_IXGRP) ? 'x' : '-');
-		ft_printf("%c", (elem->stat.st_mode & S_IROTH) ? 'r' : '-');
-		ft_printf("%c", (elem->stat.st_mode & S_IWOTH) ? 'w' : '-');
-		ft_printf("%c ", (elem->stat.st_mode & S_IXOTH) ? 'x' : '-');
-	}
+	ft_printf("%c", (elem->stat.st_mode & S_IFDIR) ? 'd' : '-');
+	ft_printf("%c", (elem->stat.st_mode & S_IRUSR) ? 'r' : '-');
+	ft_printf("%c", (elem->stat.st_mode & S_IWUSR) ? 'w' : '-');
+	ft_printf("%c", (elem->stat.st_mode & S_IXUSR) ? 'x' : '-');
+	ft_printf("%c", (elem->stat.st_mode & S_IRGRP) ? 'r' : '-');
+	ft_printf("%c", (elem->stat.st_mode & S_IWGRP) ? 'w' : '-');
+	ft_printf("%c", (elem->stat.st_mode & S_IXGRP) ? 'x' : '-');
+	ft_printf("%c", (elem->stat.st_mode & S_IROTH) ? 'r' : '-');
+	ft_printf("%c", (elem->stat.st_mode & S_IWOTH) ? 'w' : '-');
+	ft_printf("%c ", (elem->stat.st_mode & S_IXOTH) ? 'x' : '-');
 	return (E_SUCCESS);
 }
 
-int		print_size(t_list_ls *elem, int flag)
+int		print_size(t_list_ls *elem)
 {
-	if (flag)
-		ft_printf("%*d ", 5, elem->stat.st_size);// a changer
-	else if (elem->list->calc[0] < elem->stat.st_size)
-		elem->list->calc[0] = elem->stat.st_size;
+	ft_printf("%*d ", elem->list->calc[4] + 1, elem->stat.st_size);
 	return (E_SUCCESS);
 }
 
-int		print_option_l(t_list_ls *elem, int flag)
+int		print_option_l(t_list_ls *elem)
 {
-	print_rights(elem, flag);
-	if (flag)
-	{ // a delete, chacun son if
-		ft_printf("%*d ", 2, 7); // a changer
-		ft_printf("%s ", "tgreil"); // a changer
-		ft_printf("%s ", "2018_paris"); // a changer
-	}
-	print_size(elem, flag);
-	print_time(elem, flag);
+	print_rights(elem);
+	ft_printf("%*d ", elem->list->calc[1], 7); // a changer
+	ft_printf("%*s ", elem->list->calc[2], "tgreil"); // a changer
+	ft_printf("%*s ", elem->list->calc[3], "2018_paris"); // a changer
+	print_size(elem);
+	print_time(elem);
 	return (E_SUCCESS);
 }
 
-int		print_name(t_list_ls *elem, int flag)
+int		print_name(t_list_ls *elem, int to_color)
 {
-	if (flag)
+	if (to_color)
 	{
 		if ((elem->stat.st_mode & S_IFDIR))
 			ft_printf("{light blue}");
 		else if ((elem->stat.st_mode & S_IXUSR))
 			ft_printf("{light red}");
-		ft_printf("%s\n", elem->name);
-		ft_printf("{eoc}");
 	}
+	ft_printf("%s\n", elem->name);
+	if (to_color)
+		ft_printf("{eoc}");
 	return (E_SUCCESS);
 }
 
-int		print_result_unit(t_container *c, t_list_ls *elem, int flag)
+int		print_result_unit(t_container *c, t_list_ls *elem)
 {
+
 	if (option_is_set(c->option, OPTION_L))
-		print_option_l(elem, flag);
-	print_name(elem, flag);
-	if (flag <= 0)
-		print_result_unit(c, elem, flag + 1);
-	if (!flag)
-		elem->list->calc[1] += elem->stat.st_blocks;
+		print_option_l(elem);
+	print_name(elem, option_is_set(c->option, OPTION_C));
 	return (E_SUCCESS);
 }
 
@@ -102,10 +93,12 @@ int		print_result(t_container *c, t_list_manag *list, int level)
 				ft_printf("\n");
 			if (list->list_len > 1)
 				ft_printf("%s:\n", list->act->name_pathed);
+			if (option_is_set(c->option, OPTION_L))
+				ft_printf("total %d\n", list->act->folder.calc[0]);
 			print_result(c, &list->act->folder, level + 1);
 		}
 		else
-			print_result_unit(c, list->act, 0);
+			print_result_unit(c, list->act);
 		list->act = list->act->next;
 	}
 	return (E_SUCCESS);

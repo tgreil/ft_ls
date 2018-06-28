@@ -6,8 +6,23 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:53:36 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/25 10:54:34 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/27 16:06:10 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fs_ls.h"
+#include "ft_ls.h"
+
+int		int_get_unit(int nb)
+{
+	int	ret;
+
+	ret = 0;
+	if (!nb)
+		ret++;
+	while (nb > 0)
+	{
+		nb /= 10;
+		ret++;
+	}
+	return (ret);
+}

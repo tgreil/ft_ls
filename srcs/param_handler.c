@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:37:55 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/27 13:43:09 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/28 16:06:18 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int		param_handler_option(t_container *c, char *string)
 			option_set(&c->option, OPTION_R);
 		else if (string[i] == OPTION_T_C)
 			option_set(&c->option, OPTION_T);
+		else if (string[i] == OPTION_C_C)
+			option_set(&c->option, OPTION_C);
 		else
 			ft_printf("!2!%sInvalid option \"%c\"\n", LS_ERROR_MSG, string[i]);
 		i++;
