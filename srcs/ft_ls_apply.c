@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 12:50:17 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 11:51:30 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 14:01:44 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ int		path_maker(t_list_ls *elem)
 	return (E_SUCCESS);
 }
 
-int		ft_ls_apply_unit(t_container *c, t_list_ls *elem, int level)
+int		ft_ls_apply_unit(t_container *c, t_list_ls *elem)
 {
 	if ((elem->stat.st_mode & S_IFDIR) &&
-		(!level || option_is_set(c->option, OPTION_RR)))
+		(!elem->list->level || option_is_set(c->option, OPTION_RR)))
 	{
+
 		if (!(elem->dir_dir = opendir(elem->name_pathed)))
-			return (E_SUCCESS); // MSG FAIL OPEN DIR
+			return (E_SUCCESS  + 0 * ft_printf("{cyan}%s{eoc}\n", elem->name_pathed)); // MSG FAIL OPEN DIR
 		while ((elem->dirent = readdir(elem->dir_dir)))
 		{
 			if (elem->dirent->d_name[0] != '.' ||
@@ -46,6 +47,7 @@ int		ft_ls_apply_unit(t_container *c, t_list_ls *elem, int level)
 					path_maker(elem);
 				if (list_add(&elem->folder, elem->dirent->d_name) < 0)
 					return (E_ERROR);
+				elem->folder.from = elem;
 			}
 		}
 		closedir(elem->dir_dir);
@@ -53,20 +55,26 @@ int		ft_ls_apply_unit(t_container *c, t_list_ls *elem, int level)
 	return (E_SUCCESS);
 }
 
-int		ft_ls_apply(t_container *c, t_list_manag *list, int level)
+int		ft_ls_apply(t_container *c, t_list_manag *list)
 {
+	t_list_manag	*tmp;
+
 	list->act = list->start;
 	while (list->act)
 	{
-		if (ft_ls_apply_unit(c, list->act, level) == E_ERROR)
+		if (ft_ls_apply_unit(c, list->act) == E_ERROR)
 			return (E_ERROR);
-		if (list->act->folder.list_len &&
-			(!level || (ft_strcmp(list->act->name, ".") &&
+		if (list->act->folder.list_len > 0 &&
+			(!list->level || (ft_strcmp(list->act->name, ".") &&
 											ft_strcmp(list->act->name, ".."))))
 		{
-			list->act->folder.level = level;
-			list->act->folder.next = list->next;
-			list->next = &list->act->folder;
+			tmp = list;
+			while (tmp && tmp->next && tmp->next->level <= list->level + 1)
+				tmp = tmp->next;
+			list->act->folder.level = list->level + 1;
+			list->act->folder.next = tmp->next;
+			tmp->next = &list->act->folder;
+			// add to stack
 		}
 		list->act = list->act->next;
 	}

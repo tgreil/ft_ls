@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 10:32:09 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 13:55:05 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,14 @@ void		list_sort(t_list_manag *list, int sens,
 	t_list_ls	tmp;
 
 	list->act = list->start;
-	while (list->act)
+	while (list->act && list->act->next)
 	{
-		if (list->act->prev &&
-			((!sens && f(list->act->prev, list->act) > 0) ||
-			(sens && f(list->act->prev, list->act) < 0)))
+		if ((!sens && f(list->act, list->act->next) > 0) ||
+			(sens && f(list->act, list->act->next) < 0))
 		{
-			ft_memcpy(&tmp, list->act->prev, sizeof(t_list_ls) - 8 * 2);
-			ft_memcpy(list->act->prev, list->act, sizeof(t_list_ls) - 8 * 2);
-			ft_memcpy(list->act, &tmp, sizeof(t_list_ls) - 8 * 2);
+			ft_memcpy(&tmp, list->act, sizeof(t_list_ls) - 8);
+			ft_memcpy(list->act, list->act->next, sizeof(t_list_ls) - 8);
+			ft_memcpy(list->act->next, &tmp, sizeof(t_list_ls) - 8);
 			list->act = list->start;
 		}
 		else
@@ -41,7 +40,6 @@ t_list_ls	*list_create(t_list_manag *list, char *name)
 	if (!(new = malloc(sizeof(t_list_ls))))
 		return (NULL);
 	ft_bzero(new, sizeof(t_list_ls));
-	new->prev = NULL;
 	new->next = NULL;
 	if (!(new->name = ft_strdup(name)))
 		return (NULL);
@@ -53,7 +51,6 @@ t_list_ls	*list_create(t_list_manag *list, char *name)
 	new->folder.list_len = 0;
 	new->folder.path = NULL;
 	new->folder.start = NULL;
-	new->folder.end = NULL;
 	new->folder.act = NULL;
 	new->list = list;
 	return (new);
@@ -87,15 +84,9 @@ int			list_add(t_list_manag *list, char *name)
 		free(new);
 		return (E_SUCCESS);
 	}
-	else if (list->end)
-	{
-		list->end->next = new;
-		new->prev = list->end;
-	}
-	else
-		list->start = new;
+	new->next = list->start;
+	list->start = new;
 	list->list_len++;
-	list->end = new;
 	new->passwd = getpwuid(new->stat.st_uid);
 	new->group = getgrgid(new->stat.st_gid);
 	return (list_calc(list, new));
