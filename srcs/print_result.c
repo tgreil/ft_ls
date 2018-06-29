@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 19:22:31 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 10:00:32 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,13 @@
 
 int		print_rights(t_list_ls *elem)
 {
-	ft_printf("%c", (elem->stat.st_mode & S_IFDIR) ? 'd' : '-');
+	acl_entry_t	dummy;
+	acl_t		acl;
+
+	if ((elem->stat.st_mode & S_IFDIR))
+		ft_printf("%c", S_ISDIR(elem->stat.st_mode) ? 'd' : '-');
+	else
+		ft_printf("%c", S_ISLNK(elem->stat.st_mode) ? 'l' : '-');
 	ft_printf("%c", (elem->stat.st_mode & S_IRUSR) ? 'r' : '-');
 	ft_printf("%c", (elem->stat.st_mode & S_IWUSR) ? 'w' : '-');
 	ft_printf("%c", (elem->stat.st_mode & S_IXUSR) ? 'x' : '-');
@@ -23,7 +29,14 @@ int		print_rights(t_list_ls *elem)
 	ft_printf("%c", (elem->stat.st_mode & S_IXGRP) ? 'x' : '-');
 	ft_printf("%c", (elem->stat.st_mode & S_IROTH) ? 'r' : '-');
 	ft_printf("%c", (elem->stat.st_mode & S_IWOTH) ? 'w' : '-');
-	ft_printf("%c ", (elem->stat.st_mode & S_IXOTH) ? 'x' : '-');
+	ft_printf("%c", (elem->stat.st_mode & S_IXOTH) ? 'x' : '-');
+	acl = acl_get_link_np(elem->name_pathed, ACL_TYPE_EXTENDED);
+	if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
+		acl = NULL; // acl_free(acl);
+	if (listxattr(elem->name_pathed, NULL, 0, XATTR_NOFOLLOW) > 0)
+		ft_printf("@");
+	else
+		ft_printf("%c", acl != NULL ? '+' : ' ');
 	return (E_SUCCESS);
 }
 
@@ -52,7 +65,7 @@ int		print_name(t_list_ls *elem, int to_color)
 			ft_printf("{light blue}");
 		else if ((elem->stat.st_mode & S_IXUSR))
 			ft_printf("{light red}");
-		else if (0)
+		else if ((elem->stat.st_mode & S_IFLNK))
 			ft_printf("{light magenta}");
 	}
 	if (to_color)
@@ -62,13 +75,17 @@ int		print_name(t_list_ls *elem, int to_color)
 
 int		print_result_unit(t_container *c, t_list_ls *elem)
 {
+	char	buf[1024];
+	int		ret;
 
 	if (option_is_set(c->option, OPTION_L))
 		print_option_l(elem);
 	print_name(elem, option_is_set(c->option, OPTION_C));
 	ft_printf("%s", elem->name);
+	if ((ret = readlink(elem->name_pathed, buf, 1023)) > 0)
+		buf[ret] = '\0';
 	if (S_ISLNK(elem->stat.st_mode))
-		ft_printf(" -> %s", "test"); // a changer
+		ft_printf(" -> %s", buf); // a changer
 	ft_printf("\n");
 	return (E_SUCCESS);
 }

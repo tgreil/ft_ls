@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 19:28:00 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 09:50:10 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ t_list_ls	*list_create(t_list_manag *list, char *name)
 		new->name_pathed = ft_strjoin(list->path, name);
 	else
 		new->name_pathed = ft_strdup(name);
-	if (lstat(new->name_pathed, &new->stat) < 0)
-		new->state = stat(new->name_pathed, &new->stat);
+	new->state = lstat(new->name_pathed, &new->stat);
 	new->folder.list_len = 0;
 	new->folder.path = NULL;
 	new->folder.start = NULL;

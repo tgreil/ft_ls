@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 18:22:56 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 09:43:55 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <uuid/uuid.h>
 # include <time.h>
 # include <sys/xattr.h>
+# include <sys/acl.h>
 # include "libft.h"
 
 # define TRUE			1
