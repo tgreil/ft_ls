@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 10:00:32 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 10:42:18 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		print_option_l(t_list_ls *elem)
 	ft_printf("%*s ", elem->list->calc[2], elem->passwd->pw_name);
 	ft_printf("%*s ", elem->list->calc[3] + 1, elem->group->gr_name);
 	ft_printf("%*d ", elem->list->calc[4] + 1, elem->stat.st_size);
-	date = ctime(&elem->stat.st_mtime);
+	date = ctime(&elem->stat.st_ctime);
 	date[ft_strlen(date) - 9] = '\0';
 	date += 4;
 	ft_printf("%s ", date);
@@ -57,18 +57,20 @@ int		print_option_l(t_list_ls *elem)
 	return (E_SUCCESS);
 }
 
-int		print_name(t_list_ls *elem, int to_color)
+int		print_name(t_list_ls *elem, int option)
 {
-	if (to_color)
+	if (option_is_set(option, OPTION_C))
 	{
 		if ((elem->stat.st_mode & S_IFDIR))
 			ft_printf("{light blue}");
+		else if (S_ISLNK(elem->stat.st_mode))
+			ft_printf("{light magenta}");
 		else if ((elem->stat.st_mode & S_IXUSR))
 			ft_printf("{light red}");
-		else if ((elem->stat.st_mode & S_IFLNK))
-			ft_printf("{light magenta}");
+
 	}
-	if (to_color)
+	ft_printf("%s", elem->name);
+	if (option_is_set(option, OPTION_C))
 		ft_printf("{eoc}");
 	return (E_SUCCESS);
 }
@@ -80,12 +82,10 @@ int		print_result_unit(t_container *c, t_list_ls *elem)
 
 	if (option_is_set(c->option, OPTION_L))
 		print_option_l(elem);
-	print_name(elem, option_is_set(c->option, OPTION_C));
-	ft_printf("%s", elem->name);
-	if ((ret = readlink(elem->name_pathed, buf, 1023)) > 0)
-		buf[ret] = '\0';
+	print_name(elem, c->option);
+	ret = readlink(elem->name_pathed, buf, 1023);
 	if (S_ISLNK(elem->stat.st_mode))
-		ft_printf(" -> %s", buf); // a changer
+		ft_printf(" -> %.*s", ret, buf);
 	ft_printf("\n");
 	return (E_SUCCESS);
 }
