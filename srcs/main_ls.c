@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 20:36:06 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 20:51:17 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int			ls_function(t_container *c, t_list_manag *list)
 	while (list->act)
 	{
 		if (S_ISDIR(list->act->stat.st_mode) &&
-				(option_is_set(c->option, OPTION_RR) || !list->level))
+				(option_is_set(c->option, OPTION_RR) || !list->level) &&
+			(!list->level || (ft_strcmp(list->act->name, ".") && ft_strcmp(list->act->name, ".."))))
 			ls_function(c, &list->act->folder);
 		list->act = list->act->next;
 	}

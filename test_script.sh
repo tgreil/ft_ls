@@ -56,4 +56,18 @@ ls -l srcs/ > ref
 ./ft_ls -l srcs/ > mine
 diff mine ref
 
+#test 10: Option R et a en meme temps, boucle inf potentiel
+echo $color "ls -Ra" $eoc
+ls -Ra > ref
+./ft_ls -Ra > mine
+diff mine ref
+
+exit
+#test 11: toutes options depuis racine
+echo $color "ls -lRrta ~/Desktop" $eoc
+ls -lRrta ~/Desktop > ref
+./ft_ls -lRrta ~/Desktop > mine
+diff mine ref
+
+
 rm mine ref
