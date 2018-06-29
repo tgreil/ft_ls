@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 10:31:40 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 11:22:23 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define LS_ERROR_MSG	"Ft_ls error: "
 
 typedef struct s_list_ls		t_list_ls;
+typedef struct s_list_manag		t_list_manag;
 
 typedef struct			s_list_manag
 {
@@ -51,6 +52,8 @@ typedef struct			s_list_manag
 	t_list_ls			*start;
 	t_list_ls			*act;
 	t_list_ls			*end;
+	t_list_manag		*next;
+	int					level;
 }						t_list_manag;
 
 typedef struct			s_list_ls
@@ -79,7 +82,6 @@ typedef struct			s_container
 **			main_ls.c
 */
 void		ls_initializer(t_container *c);
-int			ls_exit(t_container *c, int status);
 int			ls_function(t_container *c, t_list_manag *list, int level);
 int			main(int ac, char **av);
 

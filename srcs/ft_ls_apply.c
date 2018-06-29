@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 12:50:17 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 18:23:03 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 11:51:30 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,13 @@ int		ft_ls_apply(t_container *c, t_list_manag *list, int level)
 		if (ft_ls_apply_unit(c, list->act, level) == E_ERROR)
 			return (E_ERROR);
 		if (list->act->folder.list_len &&
-			(!level || (ft_strcmp(list->act->name, ".") && ft_strcmp(list->act->name, ".."))))
-			ls_function(c, &list->act->folder, level + 1);
+			(!level || (ft_strcmp(list->act->name, ".") &&
+											ft_strcmp(list->act->name, ".."))))
+		{
+			list->act->folder.level = level;
+			list->act->folder.next = list->next;
+			list->next = &list->act->folder;
+		}
 		list->act = list->act->next;
 	}
 	return (E_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 10:42:18 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 12:00:16 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int		print_name(t_list_ls *elem, int option)
 			ft_printf("{light magenta}");
 		else if ((elem->stat.st_mode & S_IXUSR))
 			ft_printf("{light red}");
-
 	}
 	ft_printf("%s", elem->name);
 	if (option_is_set(option, OPTION_C))
@@ -92,21 +91,19 @@ int		print_result_unit(t_container *c, t_list_ls *elem)
 
 int		print_result(t_container *c, t_list_manag *list, int level)
 {
+	if (level)
+	{
+		if (list->act && list->act->prev)
+			ft_printf("\n");
+		if (list->list_len > 1)
+			ft_printf("%s:\n", list->act->name_pathed);
+		if (option_is_set(c->option, OPTION_L))
+			ft_printf("total %d\n", list->act->folder.calc[0]);
+	}
 	list->act = list->start;
 	while (list->act)
 	{
-		if ((list->act->stat.st_mode & S_IFDIR) &&
-			(!level || option_is_set(c->option, OPTION_RR)))
-		{
-			if (list->act && list->act->prev)
-				ft_printf("\n");
-			if (list->list_len > 1)
-				ft_printf("%s:\n", list->act->name_pathed);
-			if (option_is_set(c->option, OPTION_L))
-				ft_printf("total %d\n", list->act->folder.calc[0]);
-			print_result(c, &list->act->folder, level + 1);
-		}
-		else
+		if (level || !(list->act->stat.st_mode & S_IFDIR))
 			print_result_unit(c, list->act);
 		list->act = list->act->next;
 	}
