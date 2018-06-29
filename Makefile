@@ -6,7 +6,7 @@
 #    By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/07 16:24:07 by tgreil            #+#    #+#              #
-#    Updated: 2018/06/27 16:05:48 by tgreil           ###   ########.fr        #
+#    Updated: 2018/06/29 21:18:09 by tgreil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,6 @@ OBJS	= $(addprefix srcs/, $(SRCS:.c=.o))
 
 LIBS	= -Llibft/ -lft
 
-PROJECT = ft_ls_project
-
 NAME	= ft_ls
 
 RM	= rm -f
@@ -40,15 +38,13 @@ CFLAGS	+= -Iincludes/ -Ilibft/includes/
 
 LDFLAGS	=  $(LIBS)
 
-$(PROJECT):	$(LIB) $(NAME)
-
-$(NAME): 	$(OBJS)
+$(NAME): $(LIB)	$(OBJS)
 	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 $(LIB):
 	$(MAKELIB)
 
-all:	$(PROJECT)
+all:	$(NAME)
 
 clean:
 	$(RM) $(OBJS)

@@ -62,7 +62,6 @@ ls -Ra > ref
 ./ft_ls -Ra > mine
 diff mine ref
 
-exit
 #test 11: toutes options depuis racine
 echo $color "ls -lRrta ~/Desktop" $eoc
 ls -lRrta ~/Desktop > ref
