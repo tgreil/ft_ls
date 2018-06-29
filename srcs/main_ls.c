@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 13:29:25 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 20:20:29 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int			ls_function(t_container *c, t_list_manag *list)
 	if (option_is_set(c->option, OPTION_T))
 		list_sort(list, option_is_set(c->option, OPTION_R), &sort_date);
 	print_result(c, list);
-	if (list->next)
-		ls_function(c, list->next);
 	return (E_SUCCESS);
 }
 

@@ -39,10 +39,10 @@ ls -ar > ref
 diff mine ref
 
 #test 7: option R (open recursive folder)
-echo $color "ls -R libft" $eoc
-ls -R > ref
-./ft_ls -R > mine
-diff mine ref
+#echo $color "ls -R libft" $eoc
+#ls -R > ref
+#./ft_ls -R > mine
+#diff mine ref
 
 #test 8: option R with reverse
 #echo $color "ls -Rr" $eoc

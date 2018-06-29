@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 13:55:05 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/29 20:18:43 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,30 @@
 void		list_sort(t_list_manag *list, int sens,
 									int (*f)(t_list_ls *, t_list_ls *))
 {
-	t_list_ls	tmp;
+	t_list_ls	*last;
 
+	last = NULL;
 	list->act = list->start;
 	while (list->act && list->act->next)
 	{
 		if ((!sens && f(list->act, list->act->next) > 0) ||
 			(sens && f(list->act, list->act->next) < 0))
 		{
-			ft_memcpy(&tmp, list->act, sizeof(t_list_ls) - 8);
-			ft_memcpy(list->act, list->act->next, sizeof(t_list_ls) - 8);
-			ft_memcpy(list->act->next, &tmp, sizeof(t_list_ls) - 8);
+			if (!last)
+				list->start = list->act->next;
+			else
+				last->next = list->act->next;
+			last = list->act->next->next;
+			list->act->next->next = list->act;
+			list->act->next = last;
+			last = NULL;
 			list->act = list->start;
 		}
 		else
+		{
+			last = list->act;
 			list->act = list->act->next;
+		}
 	}
 }
 
@@ -78,7 +87,7 @@ int			list_add(t_list_manag *list, char *name)
 		return (E_ERROR);
 	if (new->state < 0)
 	{
-		ft_printf("!2!%s%s: Problem to load file\n", LS_ERROR_MSG, new->name);
+		// stock msg
 		free(new->name_pathed);
 		free(new->name);
 		free(new);
