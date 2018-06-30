@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 17:57:51 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 18:11:28 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int		print_result_unit(t_container *c, t_list_ls *elem)
 	if (option_is_set(c->option, OPTION_C))
 		ft_printf("{eoc}");
 	ret = readlink(elem->name_pathed, buf, 1023);
-	if (S_ISLNK(elem->stat.st_mode))
+	if (S_ISLNK(elem->stat.st_mode) && option_is_set(c->option, OPTION_L))
 		ft_printf(" -> %.*s", ret, buf);
 	ft_printf("\n");
 	return (E_SUCCESS);
@@ -126,6 +126,8 @@ int		print_result(t_container *c, t_list_manag *list)
 			ft_printf("\n");
 		ft_printf("%s:\n", list->from->name_pathed);
 	}
+	if (list->from && list->from->state == -2)
+		ft_printf("%s%s: Permission denied\n", LS_ERROR_MSG, list->from->name);
 	if (list->level && option_is_set(c->option, OPTION_L) && list->list_len)
 		ft_printf("total %d\n", list->calc[0]);
 	while (list->act)
