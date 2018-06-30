@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 14:21:33 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 16:13:39 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct			s_list_ls
 	struct s_list_manag	folder;
 	struct s_list_manag	*list;
 	struct s_list_ls	*next;
+	struct s_list_ls	*prev;
 }						t_list_ls;
 
 typedef struct			s_container
@@ -102,6 +103,7 @@ int			print_result(t_container *c, t_list_manag *list);
 /*
 **			list_manag.c
 */
+void		list_swap(t_list_manag *list, t_list_ls *prev, t_list_ls *act);
 void		list_sort(t_list_manag *list, int sens,
 									int (*f)(t_list_ls *, t_list_ls *));
 t_list_ls	*list_create(t_list_manag *list, char *name);

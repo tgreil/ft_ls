@@ -6,39 +6,45 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 15:15:48 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 16:32:46 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+void		list_swap(t_list_manag *list, t_list_ls *prev, t_list_ls *act)
+{
+	prev->next = act->next;
+	if (act->next)
+		act->next->prev = prev;
+	act->next = prev;
+	act->prev = prev->prev;
+	if (act->prev)
+		prev->prev->next = act;
+	else
+		list->start = act;
+	prev->prev = act;
+}
+
 void		list_sort(t_list_manag *list, int sens,
 									int (*f)(t_list_ls *, t_list_ls *))
 {
-	t_list_ls	*last;
+	t_list_ls	*prev;
+	t_list_ls	*act;
 
-	last = NULL;
-	list->act = list->start;
-	while (list->act && list->act->next)
+	prev = NULL;
+	act = list->start;
+	while (act)
 	{
-		if ((!sens && f(list->act, list->act->next) > 0) ||
-			(sens && f(list->act, list->act->next) < 0))
+		while (act && prev &&
+				((!sens && f(prev, act) > 0) ||
+				(sens && f(prev, act) < 0)))
 		{
-			if (!last)
-				list->start = list->act->next;
-			else
-				last->next = list->act->next;
-			last = list->act->next->next;
-			list->act->next->next = list->act;
-			list->act->next = last;
-			last = NULL;
-			list->act = list->start;
+			list_swap(list, prev, act);
+			prev = act->prev;
 		}
-		else
-		{
-			last = list->act;
-			list->act = list->act->next;
-		}
+		prev = act;
+		act = act->next;
 	}
 }
 
@@ -57,10 +63,6 @@ t_list_ls	*list_create(t_list_manag *list, char *name)
 	else
 		new->name_pathed = ft_strdup(name);
 	new->state = lstat(new->name_pathed, &new->stat);
-	new->folder.list_len = 0;
-	new->folder.path = NULL;
-	new->folder.start = NULL;
-	new->folder.act = NULL;
 	new->list = list;
 	return (new);
 }
@@ -97,7 +99,8 @@ int			list_add(t_list_manag *list, char *name)
 		free(new);
 		return (E_SUCCESS);
 	}
-	new->next = list->start;
+	if ((new->next = list->start))
+		list->start->prev = new;
 	list->start = new;
 	list->list_len++;
 	new->passwd = getpwuid(new->stat.st_uid);

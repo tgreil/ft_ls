@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:37:55 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 13:30:31 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 15:26:59 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		param_handler(t_container *c, int ac, char **av)
 	while (i < ac && av[i][0] == '-')
 	{
 		if (param_handler_option(c, av[i++]) == E_ERROR)
-			break;
+			break ;
 	}
 	if (i >= ac)
 		list_add(&c->list_param, ".");
@@ -64,7 +64,6 @@ int		param_handler(t_container *c, int ac, char **av)
 		if (param_handler_file(c, av[i]) == E_ERROR)
 			return (E_ERROR);
 		i++;
-
 	}
 	return (E_SUCCESS);
 }
