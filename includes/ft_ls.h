@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 19:56:13 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 14:21:33 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct			s_container
 */
 void		ls_initializer(t_container *c);
 int			ls_function(t_container *c, t_list_manag *list);
+int			ls_exit(t_list_manag *list, int status);
 int			main(int ac, char **av);
 
 /*

@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 13:29:36 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 14:25:45 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,25 @@ int			ls_function(t_container *c, t_list_manag *list)
 	return (E_SUCCESS);
 }
 
+int			ls_exit(t_list_manag *list, int status)
+{
+	t_list_ls	*last;
+
+	list->act = list->start;
+	while (list->act)
+	{
+		last = list->act;
+		if (list->act->folder.list_len > 0)
+			ls_exit(&list->act->folder, status);
+		free(last->name);
+		free(last->name_pathed);
+		free(last->folder.path);
+		list->act = list->act->next;
+		free(last);
+	}
+	return (status);
+}
+
 int			main(int ac, char **av)
 {
 	t_container	c;
@@ -51,5 +70,5 @@ int			main(int ac, char **av)
 	c.list_param.level = 0;
 	if (ls_function(&c, &c.list_param) == E_ERROR)
 		return (E_ERROR);
-	return (E_SUCCESS);
+	return (ls_exit(&c.list_param, E_SUCCESS));
 }
