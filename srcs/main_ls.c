@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 17:22:56 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 18:24:53 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,15 @@ int			ls_function(t_container *c, t_list_manag *list)
 	list->act = list->start;
 	while (list->act)
 	{
-		if (S_ISDIR(list->act->stat.st_mode) &&
+		if (list->act->state == -2)
+		{
+			if (list->level > 0 || list->act->prev)
+				ft_printf("\n");
+			ft_printf("%s:\n", list->act->name_pathed);
+			ft_printf("!2!%s%s: Permission denied\n",
+											LS_ERROR_MSG, list->act->name);
+		}
+		else if (S_ISDIR(list->act->stat.st_mode) &&
 				(option_is_set(c->option, OPTION_RR) || !list->level) &&
 			(!list->level || (ft_strcmp(list->act->name, ".") &&
 											ft_strcmp(list->act->name, ".."))))
