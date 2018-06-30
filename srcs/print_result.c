@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 14:12:42 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 15:10:57 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,15 @@ int		print_result_unit(t_container *c, t_list_ls *elem)
 int		print_result(t_container *c, t_list_manag *list)
 {
 	list->act = list->start;
-	if (list->from && list->from->list->level)
-		if (list->list_len > 0)
-			ft_printf("\n%s:\n", list->from->name_pathed);
+	if (list->from &&
+			((!list->from->list->level && list->from->list->list_len > 1) ||
+				(list->from->list->level && list->from->list->list_len > 0)))
+	{
+		if (!(!list->from->list->level &&
+									list == &list->from->list->start->folder))
+			ft_printf("\n");
+		ft_printf("%s:\n", list->from->name_pathed);
+	}
 	if (list->level && option_is_set(c->option, OPTION_L))
 		ft_printf("total %d\n", list->calc[0]);
 	while (list->act)

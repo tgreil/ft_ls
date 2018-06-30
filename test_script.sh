@@ -72,5 +72,10 @@ ls -lRrta ~/Desktop > $FILE_REF
 ./ft_ls -lRrta ~/Desktop > $FILE_MINE
 diff $FILE_MINE $FILE_REF
 
+#test 11: test avec plusieurs dossiers en parametre
+echo $color "ls -lRrta srcs libft includes libft/srcs" $eoc
+ls -lRrta srcs libft includes libft/srcs > $FILE_REF
+./ft_ls -lRrta srcs libft includes libft/srcs > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 rm $FILE_MINE $FILE_REF
