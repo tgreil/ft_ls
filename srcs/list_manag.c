@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 14:24:10 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 15:15:48 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,14 @@ int			list_calc(t_list_manag *list, t_list_ls *new)
 	list->calc[0] += new->stat.st_blocks;
 	if (list->calc[1] < int_get_unit(new->stat.st_nlink))
 		list->calc[1] = int_get_unit(new->stat.st_nlink);
-	if (list->calc[2] < (int)ft_strlen(new->passwd->pw_name))
+	if (new->passwd && list->calc[2] < (int)ft_strlen(new->passwd->pw_name))
 		list->calc[2] = (int)ft_strlen(new->passwd->pw_name);
-	if (list->calc[3] < (int)ft_strlen(new->group->gr_name))
+	else if (list->calc[2] < int_get_unit(new->stat.st_uid))
+		list->calc[2] = int_get_unit(new->stat.st_uid);
+	if (new->group && list->calc[3] < (int)ft_strlen(new->group->gr_name))
 		list->calc[3] = (int)ft_strlen(new->group->gr_name);
+	else if (list->calc[3] < int_get_unit(new->stat.st_gid))
+		list->calc[3] = int_get_unit(new->stat.st_gid);
 	if (list->calc[4] < int_get_unit(new->stat.st_size))
 		list->calc[4] = int_get_unit(new->stat.st_size);
 	return (E_SUCCESS);

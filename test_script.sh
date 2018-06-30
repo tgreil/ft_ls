@@ -78,4 +78,10 @@ ls -lRrta srcs libft includes libft/srcs > $FILE_REF
 ./ft_ls -lRrta srcs libft includes libft/srcs > $FILE_MINE
 diff $FILE_MINE $FILE_REF
 
+#test 12: test avec fail de group and user
+echo $color "ls -l /private/etc" $eoc
+ls -l /private/etc > $FILE_REF
+./ft_ls -l /private/etc > $FILE_MINE
+diff $FILE_MINE $FILE_REF
+
 rm $FILE_MINE $FILE_REF

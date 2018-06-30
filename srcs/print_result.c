@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 15:10:57 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 15:25:04 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,14 @@ int		print_option_l(t_list_ls *elem)
 
 	print_rights(elem);
 	ft_printf("%*d ", elem->list->calc[1] + 1, elem->stat.st_nlink);
-	ft_printf("%*s ", elem->list->calc[2], elem->passwd->pw_name);
-	ft_printf("%*s ", elem->list->calc[3] + 1, elem->group->gr_name);
+	if (elem->passwd)
+		ft_printf("%*s ", elem->list->calc[2], elem->passwd->pw_name);
+	else
+		ft_printf("%*d ", elem->list->calc[2], elem->stat.st_uid);
+	if (elem->group)
+		ft_printf(" %-*s ", elem->list->calc[3], elem->group->gr_name);
+	else
+		ft_printf(" %-*d ", elem->list->calc[3], elem->stat.st_gid);
 	ft_printf("%*d ", elem->list->calc[4] + 1, elem->stat.st_size);
 	date = ctime(&elem->stat.st_mtime);
 	date += 4;
