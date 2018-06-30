@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 20:51:17 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 13:29:36 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ int			main(int ac, char **av)
 	ls_initializer(&c);
 	if (param_handler(&c, ac, av) == E_ERROR)
 		return (E_ERROR);
-	if (c.list_param.list_len <= 0)
-		list_add(&c.list_param, ft_strdup("."));
 	c.list_param.level = 0;
 	if (ls_function(&c, &c.list_param) == E_ERROR)
 		return (E_ERROR);

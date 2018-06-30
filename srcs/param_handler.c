@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:37:55 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/28 18:24:22 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 13:30:31 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int		param_handler_option(t_container *c, char *string)
 			option_set(&c->option, OPTION_T);
 		else if (string[i] == OPTION_C_C)
 			option_set(&c->option, OPTION_C);
+		else if (string[i] == '-')
+			return (E_ERROR);
 		else
 			ft_printf("!2!%sInvalid option \"%c\"\n", LS_ERROR_MSG, string[i]);
 		i++;
@@ -50,14 +52,19 @@ int		param_handler(t_container *c, int ac, char **av)
 	int	i;
 
 	i = 1;
+	while (i < ac && av[i][0] == '-')
+	{
+		if (param_handler_option(c, av[i++]) == E_ERROR)
+			break;
+	}
+	if (i >= ac)
+		list_add(&c->list_param, ".");
 	while (i < ac)
 	{
-		if (av[i][0] == '-')
-			param_handler_option(c, av[i]);
-		else
-			if (param_handler_file(c, av[i]) == E_ERROR)
-				return (E_ERROR);
+		if (param_handler_file(c, av[i]) == E_ERROR)
+			return (E_ERROR);
 		i++;
+
 	}
 	return (E_SUCCESS);
 }
