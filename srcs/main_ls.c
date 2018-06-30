@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 19:19:12 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 19:24:47 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,6 @@ int			ls_function(t_container *c, t_list_manag *list)
 	if (option_is_set(c->option, OPTION_T))
 		list_sort(list, option_is_set(c->option, OPTION_R), &sort_date);
 	print_result(c, list);
-	if (list->level && list->list_len == 0 &&
-							(list->from || c->list_param.list_len > 1))
-	{
-		if (&c->list_param.start->folder != list)
-			ft_printf("\n");
-		ft_printf("%s:\n", list->name);
-	}
 	ls_function_rec(c, list);
 	return (E_SUCCESS);
 }

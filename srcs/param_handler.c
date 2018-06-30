@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:37:55 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 16:38:02 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 19:29:20 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int		param_handler_option(t_container *c, char *string)
 {
 	size_t	i;
 
-	i = 1;
-	while (string[i])
+	i = 0;
+	while (string[++i])
 	{
 		if (string[i] == OPTION_L_C)
 			option_set(&c->option, OPTION_L);
@@ -29,13 +29,13 @@ int		param_handler_option(t_container *c, char *string)
 			option_set(&c->option, OPTION_R);
 		else if (string[i] == OPTION_T_C)
 			option_set(&c->option, OPTION_T);
-		else if (string[i] == OPTION_C_C)
-			option_set(&c->option, OPTION_C);
 		else if (string[i] == '-')
-			return (E_ERROR);
+			return (10);
 		else
+		{
 			ft_printf("!2!%sInvalid option \"%c\"\n", LS_ERROR_MSG, string[i]);
-		i++;
+			return (E_ERROR);
+		}
 	}
 	return (E_SUCCESS);
 }
@@ -52,9 +52,12 @@ int		param_handler(t_container *c, int ac, char **av)
 	int	i;
 
 	i = 1;
+	option_set(&c->option, OPTION_C);
 	while (i < ac && av[i][0] == '-')
 	{
 		if (param_handler_option(c, av[i++]) == E_ERROR)
+			return (E_ERROR);
+		else if (param_handler_option(c, av[i - 1]) == 10)
 			break ;
 	}
 	if (i >= ac)

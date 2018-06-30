@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 19:08:38 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 19:24:01 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef struct			s_list_manag
 	t_list_ls			*act;
 	t_list_manag		*next;
 	t_list_ls			*from;
-	char				*name;
 	int					level;
 }						t_list_manag;
 
