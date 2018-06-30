@@ -6,7 +6,7 @@
 #    By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/07 16:24:07 by tgreil            #+#    #+#              #
-#    Updated: 2018/06/30 15:35:31 by tgreil           ###   ########.fr        #
+#    Updated: 2018/06/30 17:00:26 by tgreil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ NAME	= ft_ls
 
 RM	= rm -f
 
-CC	= gcc
+CC	= clang
 
 MAKELIB	= make -C libft/
 
@@ -37,8 +37,9 @@ CFLAGS	= -W -Wall -Wextra -Werror
 CFLAGS	+= -Iincludes/ -Ilibft/includes/
 
 LDFLAGS	=  $(LIBS)
+LDFLAGS	+= -Iincludes/ -Ilibft/includes/
 
-$(NAME): $(LIB)	$(OBJS)
+$(NAME): $(LIB) $(OBJS)
 	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 $(LIB):

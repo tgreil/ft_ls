@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 16:32:46 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 17:15:46 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,11 @@ int			list_add(t_list_manag *list, char *name)
 
 	if (!(new = list_create(list, name)))
 		return (E_ERROR);
+		list->list_len++;
 	if (new->state < 0)
 	{
-		// stock msg
+		ft_printf("!2!%s%s: No such file or directory\n", LS_ERROR_MSG,
+																	new->name);
 		free(new->name_pathed);
 		free(new->name);
 		free(new);
@@ -102,7 +104,6 @@ int			list_add(t_list_manag *list, char *name)
 	if ((new->next = list->start))
 		list->start->prev = new;
 	list->start = new;
-	list->list_len++;
 	new->passwd = getpwuid(new->stat.st_uid);
 	new->group = getgrgid(new->stat.st_gid);
 	return (list_calc(list, new));
