@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 17:54:12 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 17:57:51 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ int		print_rights(t_list_ls *elem)
 	ft_printf("%c", (elem->stat.st_mode & S_IXOTH) ? 'x' : '-');
 	acl = acl_get_link_np(elem->name_pathed, ACL_TYPE_EXTENDED);
 	if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
-		acl = NULL; // acl_free(acl);
+	{
+		acl_free(acl);
+		acl = NULL;
+	}
 	if (listxattr(elem->name_pathed, NULL, 0, XATTR_NOFOLLOW) > 0)
 		ft_printf("@");
 	else
