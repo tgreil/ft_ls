@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:19 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 18:24:53 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 19:19:12 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,8 @@ void		ls_initializer(t_container *c)
 	c->list_param.path = NULL;
 }
 
-int			ls_function(t_container *c, t_list_manag *list)
+int			ls_function_rec(t_container *c, t_list_manag *list)
 {
-	if (ft_ls_apply(c, list) == E_ERROR)
-		return (E_ERROR);
-	list_sort(list, option_is_set(c->option, OPTION_R), &sort_name);
-	if (option_is_set(c->option, OPTION_T))
-		list_sort(list, option_is_set(c->option, OPTION_R), &sort_date);
-	print_result(c, list);
 	list->act = list->start;
 	while (list->act)
 	{
@@ -47,6 +41,25 @@ int			ls_function(t_container *c, t_list_manag *list)
 			ls_function(c, &list->act->folder);
 		list->act = list->act->next;
 	}
+	return (E_SUCCESS);
+}
+
+int			ls_function(t_container *c, t_list_manag *list)
+{
+	if (ft_ls_apply(c, list) == E_ERROR)
+		return (E_ERROR);
+	list_sort(list, option_is_set(c->option, OPTION_R), &sort_name);
+	if (option_is_set(c->option, OPTION_T))
+		list_sort(list, option_is_set(c->option, OPTION_R), &sort_date);
+	print_result(c, list);
+	if (list->level && list->list_len == 0 &&
+							(list->from || c->list_param.list_len > 1))
+	{
+		if (&c->list_param.start->folder != list)
+			ft_printf("\n");
+		ft_printf("%s:\n", list->name);
+	}
+	ls_function_rec(c, list);
 	return (E_SUCCESS);
 }
 

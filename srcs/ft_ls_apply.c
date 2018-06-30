@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 12:50:17 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 18:11:49 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 19:08:45 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int		ft_ls_apply_unit(t_container *c, t_list_ls *elem)
 	if (S_ISDIR(elem->stat.st_mode) &&
 		(!elem->list->level || option_is_set(c->option, OPTION_RR)))
 	{
+		path_maker(elem);
+		elem->folder.name = elem->name;
 		if (!(elem->dir_dir = opendir(elem->name_pathed)))
 		{
 			elem->state = -2;
@@ -45,8 +47,6 @@ int		ft_ls_apply_unit(t_container *c, t_list_ls *elem)
 			if (elem->dirent->d_name[0] != '.' ||
 				option_is_set(c->option, OPTION_A))
 			{
-				if (!elem->folder.list_len)
-					path_maker(elem);
 				if (list_add(&elem->folder, elem->dirent->d_name) < 0)
 					return (E_ERROR);
 				elem->folder.from = elem;
