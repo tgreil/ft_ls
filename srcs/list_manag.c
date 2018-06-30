@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 10:24:11 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 17:15:46 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 17:44:07 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ int			list_calc(t_list_manag *list, t_list_ls *new)
 		list->calc[3] = (int)ft_strlen(new->group->gr_name);
 	else if (list->calc[3] < int_get_unit(new->stat.st_gid))
 		list->calc[3] = int_get_unit(new->stat.st_gid);
-	if (list->calc[4] < int_get_unit(new->stat.st_size))
+
+	if (S_ISCHR(new->stat.st_mode) && list->calc[4] < 8)
+		list->calc[4] = 8;
+	else if (list->calc[4] < int_get_unit(new->stat.st_size))
 		list->calc[4] = int_get_unit(new->stat.st_size);
 	return (E_SUCCESS);
 }

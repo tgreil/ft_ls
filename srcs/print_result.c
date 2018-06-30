@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 17:38:42 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 17:54:12 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,23 @@ int		print_option_l(t_list_ls *elem)
 	print_rights(elem);
 	ft_printf("%*d ", elem->list->calc[1] + 1, elem->stat.st_nlink);
 	if (elem->passwd)
-		ft_printf("%*s ", elem->list->calc[2], elem->passwd->pw_name);
+		ft_printf("%-*s", elem->list->calc[2] + 1, elem->passwd->pw_name);
 	else
-		ft_printf("%*d ", elem->list->calc[2], elem->stat.st_uid);
+		ft_printf("%-*d", elem->list->calc[2] + 1, elem->stat.st_uid);
 	if (elem->group)
 		ft_printf(" %-*s ", elem->list->calc[3], elem->group->gr_name);
 	else
 		ft_printf(" %-*d ", elem->list->calc[3], elem->stat.st_gid);
-	ft_printf("%*lld ", elem->list->calc[4] + 1, elem->stat.st_size);
+	if (S_ISCHR(elem->stat.st_mode) || S_ISBLK(elem->stat.st_mode))
+		ft_printf("%*d, %3d ", elem->list->calc[4] - 4,
+					major(elem->stat.st_rdev), minor(elem->stat.st_rdev));
+	else
+		ft_printf("%*lld ", elem->list->calc[4] + 1, elem->stat.st_size);
 	date = ctime(&elem->stat.st_mtime);
 	date += 4;
 	date[ft_strlen(date) - 1] = '\0';
 	if (ft_strcmp(date + ft_strlen(date) - 5, " 2018"))
-	{
-		ft_printf("%.7s ", date);
-		ft_printf("%s ", date + ft_strlen(date) - 4);
-	}
+		ft_printf("%.7s %s ", date, date + ft_strlen(date) - 4);
 	else
 		ft_printf("%.12s ", date);
 	return (E_SUCCESS);
@@ -95,6 +96,8 @@ int		print_result_unit(t_container *c, t_list_ls *elem)
 			ft_printf("{light blue}");
 		else if (S_ISLNK(elem->stat.st_mode))
 			ft_printf("{light magenta}");
+		else if (S_ISCHR(elem->stat.st_mode))
+			ft_printf("{light yellow}");
 		else if ((elem->stat.st_mode & S_IXUSR))
 			ft_printf("{light red}");
 	}

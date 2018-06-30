@@ -84,4 +84,10 @@ ls -l /private/etc > $FILE_REF
 ./ft_ls -l /private/etc > $FILE_MINE
 diff $FILE_MINE $FILE_REF
 
+#test 13: test de chr
+echo $color "ls -l /dev" $eoc
+ls -l /dev > $FILE_REF
+./ft_ls -l /dev > $FILE_MINE
+diff $FILE_MINE $FILE_REF
+
 rm $FILE_MINE $FILE_REF
