@@ -6,21 +6,35 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 17:18:36 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 17:38:42 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+char	print_right_more(t_list_ls *elem)
+{
+	if (S_ISLNK(elem->stat.st_mode) == 1)
+		return ('l');
+	else if (S_ISFIFO(elem->stat.st_mode) == 1)
+		return ('p');
+	else if (S_ISBLK(elem->stat.st_mode) == 1)
+		return ('b');
+	else if (S_ISCHR(elem->stat.st_mode) == 1)
+		return ('c');
+	else if (S_ISSOCK(elem->stat.st_mode) == 1)
+		return ('s');
+	else if (S_ISDIR(elem->stat.st_mode) == 1)
+		return ('d');
+	return ('-');
+}
 
 int		print_rights(t_list_ls *elem)
 {
 	acl_entry_t	dummy;
 	acl_t		acl;
 
-	if ((elem->stat.st_mode & S_IFDIR))
-		ft_printf("%c", S_ISDIR(elem->stat.st_mode) ? 'd' : '-');
-	else
-		ft_printf("%c", S_ISLNK(elem->stat.st_mode) ? 'l' : '-');
+	ft_printf("%c", print_right_more(elem));
 	ft_printf("%c", (elem->stat.st_mode & S_IRUSR) ? 'r' : '-');
 	ft_printf("%c", (elem->stat.st_mode & S_IWUSR) ? 'w' : '-');
 	ft_printf("%c", (elem->stat.st_mode & S_IXUSR) ? 'x' : '-');
@@ -68,9 +82,14 @@ int		print_option_l(t_list_ls *elem)
 	return (E_SUCCESS);
 }
 
-int		print_name(t_list_ls *elem, int option)
+int		print_result_unit(t_container *c, t_list_ls *elem)
 {
-	if (option_is_set(option, OPTION_C))
+	char	buf[1024];
+	int		ret;
+
+	if (option_is_set(c->option, OPTION_L))
+		print_option_l(elem);
+	if (option_is_set(c->option, OPTION_C))
 	{
 		if ((elem->stat.st_mode & S_IFDIR))
 			ft_printf("{light blue}");
@@ -80,19 +99,8 @@ int		print_name(t_list_ls *elem, int option)
 			ft_printf("{light red}");
 	}
 	ft_printf("%s", elem->name);
-	if (option_is_set(option, OPTION_C))
+	if (option_is_set(c->option, OPTION_C))
 		ft_printf("{eoc}");
-	return (E_SUCCESS);
-}
-
-int		print_result_unit(t_container *c, t_list_ls *elem)
-{
-	char	buf[1024];
-	int		ret;
-
-	if (option_is_set(c->option, OPTION_L))
-		print_option_l(elem);
-	print_name(elem, c->option);
 	ret = readlink(elem->name_pathed, buf, 1023);
 	if (S_ISLNK(elem->stat.st_mode))
 		ft_printf(" -> %.*s", ret, buf);
