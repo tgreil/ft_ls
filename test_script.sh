@@ -1,72 +1,76 @@
 color="\033[31m"
 eoc="\033[0m"
-touch mine ref
+FILE_MINE="/tmp/mine"
+FILE_REF="/tmp/ref"
+touch $FILE_MINE $FILE_REF
 make
+
+
 # test 1: simple test a vide ( default : ".")
 echo $color "ls" $eoc
-ls > ref
-./ft_ls > mine
-diff mine ref
+ls > $FILE_REF
+./ft_ls > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 #test 2: option t (trier par time)
 echo $color "ls -t" $eoc
-ls -t > ref
-./ft_ls -t > mine
-diff mine ref
+ls -t > $FILE_REF
+./ft_ls -t > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 #test 3: option t et r trier par time mais a l'envers
 echo $color "ls -tr" $eoc
-ls -tr > ref
-./ft_ls -tr > mine
-diff mine ref
+ls -tr > $FILE_REF
+./ft_ls -tr > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 #test 4: sans option avec un dossier en parametre
 echo $color "ls srcs" $eoc
-ls srcs > ref
-./ft_ls srcs > mine
-diff mine ref
+ls srcs > $FILE_REF
+./ft_ls srcs > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 #test 5: option a (invisible file)
 echo $color "ls -a" $eoc
-ls -a > ref
-./ft_ls -a > mine
-diff mine ref
+ls -a > $FILE_REF
+./ft_ls -a > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 #test 6: reversed a option
 echo $color "ls -ar" $eoc
-ls -ar > ref
-./ft_ls -ar > mine
-diff mine ref
+ls -ar > $FILE_REF
+./ft_ls -ar > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 #test 7: option R (open recursive folder)
 echo $color "ls -R libft" $eoc
-ls -R libft > ref
-./ft_ls -R libft > mine
-diff mine ref
+ls -R libft > $FILE_REF
+./ft_ls -R libft > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 #test 8: option R with reverse
 echo $color "ls -Rr" $eoc
-ls -Rr > ref
-./ft_ls -Rr > mine
-diff mine ref
+ls -Rr > $FILE_REF
+./ft_ls -Rr > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 #test 9: option l, print informations about files
 echo $color "ls -l srcs/" $eoc
-ls -l srcs/ > ref
-./ft_ls -l srcs/ > mine
-diff mine ref
+ls -l srcs/ > $FILE_REF
+./ft_ls -l srcs/ > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 #test 10: Option R et a en meme temps, boucle inf potentiel
 echo $color "ls -Ra" $eoc
-ls -Ra > ref
-./ft_ls -Ra > mine
-diff mine ref
+ls -Ra > $FILE_REF
+./ft_ls -Ra > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 #test 11: toutes options depuis racine
 echo $color "ls -lRrta ~/Desktop" $eoc
-ls -lRrta ~/Desktop > ref
-./ft_ls -lRrta ~/Desktop > mine
-diff mine ref
+ls -lRrta ~/Desktop > $FILE_REF
+./ft_ls -lRrta ~/Desktop > $FILE_MINE
+diff $FILE_MINE $FILE_REF
 
 
-rm mine ref
+rm $FILE_MINE $FILE_REF

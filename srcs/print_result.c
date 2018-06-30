@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/29 20:36:48 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 14:12:42 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,16 @@ int		print_option_l(t_list_ls *elem)
 	ft_printf("%*s ", elem->list->calc[2], elem->passwd->pw_name);
 	ft_printf("%*s ", elem->list->calc[3] + 1, elem->group->gr_name);
 	ft_printf("%*d ", elem->list->calc[4] + 1, elem->stat.st_size);
-	date = ctime(&elem->stat.st_ctime);
-	date[ft_strlen(date) - 9] = '\0';
+	date = ctime(&elem->stat.st_mtime);
 	date += 4;
-	ft_printf("%s ", date);
-	// print year and not hour if != actual_year
+	date[ft_strlen(date) - 1] = '\0';
+	if (ft_strcmp(date + ft_strlen(date) - 5, " 2018"))
+	{
+		ft_printf("%.7s ", date);
+		ft_printf("%s ", date + ft_strlen(date) - 4);
+	}
+	else
+		ft_printf("%.12s ", date);
 	return (E_SUCCESS);
 }
 
