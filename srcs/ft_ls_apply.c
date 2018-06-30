@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 12:50:17 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 16:56:54 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 17:23:37 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ int		ft_ls_apply_unit(t_container *c, t_list_ls *elem)
 		(!elem->list->level || option_is_set(c->option, OPTION_RR)))
 	{
 		if (!(elem->dir_dir = opendir(elem->name_pathed)))
-			return (E_SUCCESS); // MSG FAIL OPEN DIR
+		{
+			ft_printf("%s%s: Permission denied\n", LS_ERROR_MSG, elem->name);
+			return (E_SUCCESS);
+		}
 		while ((elem->dirent = readdir(elem->dir_dir)))
 		{
 			if (elem->dirent->d_name[0] != '.' ||

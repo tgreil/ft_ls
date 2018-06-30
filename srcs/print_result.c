@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 11:57:43 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 16:48:20 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 17:18:36 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,6 @@ int		print_result_unit(t_container *c, t_list_ls *elem)
 	char	buf[1024];
 	int		ret;
 
-	if (elem->error)
-	{
-		ft_printf("%s%s : %s\n", LS_ERROR_MSG, elem->error);
-		free(elem->error);
-		return (E_SUCCESS);
-	}
 	if (option_is_set(c->option, OPTION_L))
 		print_option_l(elem);
 	print_name(elem, c->option);

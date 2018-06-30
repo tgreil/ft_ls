@@ -6,7 +6,7 @@
 /*   By: tgreil <tgreil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 12:26:57 by tgreil            #+#    #+#             */
-/*   Updated: 2018/06/30 17:02:28 by tgreil           ###   ########.fr       */
+/*   Updated: 2018/06/30 17:18:28 by tgreil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ typedef struct			s_list_ls
 	DIR					*dir_dir;
 	char				*name;
 	char				*name_pathed;
-	char				*error;
 	struct s_list_manag	folder;
 	struct s_list_manag	*list;
 	struct s_list_ls	*next;
